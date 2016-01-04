@@ -71,6 +71,7 @@ bool smpl::FileParser::open(const std::string &filename)
         }
     }
 
+    _isBinaryFile = false;
     _file.open(filename.c_str());
     return _file.is_open();
 }
@@ -124,6 +125,7 @@ bool smpl::FileParser::_parseSourceFile(Ram &ram, std::ostream &log)
     {
         std::string str;
         std::getline(_file, str);
+
 
         //Обрезаем комментарий
         str = str.substr(0, str.find('!'));

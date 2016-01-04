@@ -146,8 +146,7 @@ void smpl::Cpu::execute(Ram &ram)
         if (ram[_ip] == instructions[i].code)
         {
             (this->*instructions[i].function)(ram);
-            if (instructions[i].code < 9 || instructions[i].code > 11)
-                _ip += instructions[i].size;
+            _ip += instructions[i].size;
             return;
         }
     }
