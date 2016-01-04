@@ -79,7 +79,7 @@ namespace smpl
         static const Instruction instructions[INSTRUCTION_NUMBER];
 
         //Выполнение следующей инструкции
-        void nextInstruction(Ram &ram);
+        void execute(Ram &ram);
 
     private:
 

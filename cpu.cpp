@@ -8,16 +8,16 @@ const smpl::Cpu::Instruction smpl::Cpu::instructions[]  = {
     { "read",  1, 1, smpl::Cpu::Instruction::NONE,     smpl::Cpu::Instruction::NONE,    &smpl::Cpu::_read  },
     { "write", 2, 1, smpl::Cpu::Instruction::NONE,     smpl::Cpu::Instruction::NONE,    &smpl::Cpu::_write },
 
-    { "mov12", 3, 1, smpl::Cpu::Instruction::REGISTR,  smpl::Cpu::Instruction::REGISTR, &smpl::Cpu::_mov12 },
-    { "mov21", 4, 1, smpl::Cpu::Instruction::REGISTR,  smpl::Cpu::Instruction::REGISTR, &smpl::Cpu::_mov21 },
-    { "movc1", 5, 2, smpl::Cpu::Instruction::NUMBER,   smpl::Cpu::Instruction::REGISTR, &smpl::Cpu::_movc1 },
-    { "movc2", 6, 2, smpl::Cpu::Instruction::NUMBER,   smpl::Cpu::Instruction::REGISTR, &smpl::Cpu::_movc2 },
+    { "mov12", 3, 1, smpl::Cpu::Instruction::NONE,     smpl::Cpu::Instruction::NONE,    &smpl::Cpu::_mov12 },
+    { "mov21", 4, 1, smpl::Cpu::Instruction::NONE,     smpl::Cpu::Instruction::NONE,    &smpl::Cpu::_mov21 },
+    { "movc1", 5, 2, smpl::Cpu::Instruction::NUMBER,   smpl::Cpu::Instruction::NONE,    &smpl::Cpu::_movc1 },
+    { "movc2", 6, 2, smpl::Cpu::Instruction::NUMBER,   smpl::Cpu::Instruction::NONE,    &smpl::Cpu::_movc2 },
     { "load",  7, 3, smpl::Cpu::Instruction::ADDRESS,  smpl::Cpu::Instruction::NONE,    &smpl::Cpu::_load  },
     { "store", 8, 3, smpl::Cpu::Instruction::ADDRESS,  smpl::Cpu::Instruction::NONE,    &smpl::Cpu::_store },
 
-    { "jmp",   9, 3, smpl::Cpu::Instruction::ADDRESS,  smpl::Cpu::Instruction::NONE,    &smpl::Cpu::_jmp   },
-    { "je",    10, 3, smpl::Cpu::Instruction::ADDRESS, smpl::Cpu::Instruction::NONE,   &smpl::Cpu::_je     },
-    { "jl",    11, 3, smpl::Cpu::Instruction::ADDRESS, smpl::Cpu::Instruction::NONE,   &smpl::Cpu::_jl     },
+    { "jmp",   9,  3, smpl::Cpu::Instruction::ADDRESS,  smpl::Cpu::Instruction::NONE,    &smpl::Cpu::_jmp  },
+    { "je",    10, 3, smpl::Cpu::Instruction::ADDRESS, smpl::Cpu::Instruction::NONE,    &smpl::Cpu::_je    },
+    { "jl",    11, 3, smpl::Cpu::Instruction::ADDRESS, smpl::Cpu::Instruction::NONE,    &smpl::Cpu::_jl    },
 
     { "add",   12, 1, smpl::Cpu::Instruction::NONE,     smpl::Cpu::Instruction::NONE,    &smpl::Cpu::_add  },
     { "sub",   13, 1, smpl::Cpu::Instruction::NONE,     smpl::Cpu::Instruction::NONE,    &smpl::Cpu::_sub  },
@@ -139,14 +139,15 @@ void smpl::Cpu::_div(Ram &ram)
     _acc1 /= _acc2;
 }
 
-void smpl::Cpu::nextInstruction(Ram &ram)
+void smpl::Cpu::execute(Ram &ram)
 {
     for (ubyte i = 0; i < INSTRUCTION_NUMBER; i++)
     {
         if (ram[_ip] == instructions[i].code)
         {
             (this->*instructions[i].function)(ram);
-            _ip += instructions[i].size;
+            if (instructions[i].code < 9 || instructions[i].code > 11)
+                _ip += instructions[i].size;
             return;
         }
     }

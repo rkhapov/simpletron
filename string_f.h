@@ -12,6 +12,8 @@ namespace smpl
     {
         std::string intTo16String(int n);
         int string16ToInt(const std::string &string);
+
+        bool isNumber(const std::string &str);
     }
 }
 

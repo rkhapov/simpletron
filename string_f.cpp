@@ -1,4 +1,5 @@
 #include <sstream>
+#include <cctype>
 
 #include "string_f.h"
 
@@ -17,5 +18,18 @@ int smpl::funcs::string16ToInt(const std::string &string)
     int n;
     ss >> std::hex >> n;
     return n;
+}
+
+bool smpl::funcs::isNumber(const std::string &str)
+{
+    for (std::size_t i = 0; i < str.size(); i++)
+    {
+        if (!std::isdigit(str[i]))
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
